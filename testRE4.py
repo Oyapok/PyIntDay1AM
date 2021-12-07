@@ -1,7 +1,5 @@
 import re
 
-text="278.3"
-
 """
 \d     a digit
 +         1 or more occurrence
@@ -23,13 +21,16 @@ text="278.3"
 $   end the string
 """
 
-regexp=re.compile(r"^(\d+\.\d+)$")
+text="278.3"
+
+# regexp=re.compile(r"^(\d+\.\d+)$")
+regexp=re.compile(r"^\d+\.\d+$")
 
 matchobj=regexp.search(text)
 if matchobj:
     print("The string text 'match'")
 # =============================================================================
-    print(matchobj.groups())
+    print(matchobj.group(0))
 
 # =============================================================================
 else:

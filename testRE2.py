@@ -1,6 +1,6 @@
 import re
 
-text="value +23.45 the end"
+text="value 12:23:45 the end"
 
 """
 \d     a digit
@@ -18,12 +18,14 @@ text="value +23.45 the end"
 \d <=> [0-9]
 """
 
-regexp=re.compile(r"([+-]?(\d+)\.(\d+))")
+# regexp=re.compile(r"([+-]?(\d+)\.(\d+))")
+regexp=re.compile(r"(\d\d):(\d\d):(\d\d)")
 
 matchobj=regexp.search(text)
 if matchobj:
     print("The string text 'match'")
     print(matchobj.groups())
+    print(matchobj.group(0))
     print(matchobj.group(1))
     print(matchobj.group(2))
     print(matchobj.group(3))

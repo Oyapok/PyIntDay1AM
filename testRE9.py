@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-VERBOSE Flag
+VERBOSE Flag    used to document the pattern to make it more readable
 """
 import re
 

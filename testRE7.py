@@ -1,10 +1,10 @@
 import re
 
-text="date: 2002:23:02"
-
 """
 sub()
 """
+
+text="date: 2002:23:02"
 
 regexp=re.compile(r"(\d{4}):(\d{2}):(\d{2})")
 

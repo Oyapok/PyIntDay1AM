@@ -1,10 +1,10 @@
 import re
 
-text="123 56:678   789;;897"
-
 """
 split()
 """
+
+text="123 56:678   789;;897"
 
 
 regexp=re.compile(r"[;:\s]+")

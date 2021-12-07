@@ -39,82 +39,128 @@ class ParseFloatError(Exception):
     pass 
 
 def parseDate(inputText):
-    """
 
-    Parameters
-    ----------
-    inputText : TYPE
-        DESCRIPTION.
+    regexp=re.compile(r"^([0-3]\d)/([01]\d)/(\d{4}|\d{2})$")
 
-    Raises
-    ------
-    ParseDateError
-        DESCRIPTION.
-
-    Returns
-    -------
-    TYPE
-        DESCRIPTION.
-
-    """
-    reg=re.compile(r"""^          # beginning of the string
-                       ([0-3]\d)  # the day
-                       /
-                       ([01]\d)   # the month
-                       /
-                       (\d\d|\d{4}) # the year
-                       $            # end of the string
-                       """, re.VERBOSE)
+    match = regexp.search(inputText)
     
-    mo=reg.search(inputText)
-    if mo:
-        d,m,y=map(int, mo.groups())
-        if y <= 99: 
-            y+= 2000
-        return dt.date(y, m, d)
+    
+    if match:
+        d = int(match[1])
+        m = int(match[2])
+        y = int(match[3])
+        if y <= 99:
+            y +=2000
+        print('Format ok. Date is')
+        print(dt.date(y, m, d))
     else:
-        raise ParseDateError(f"Bad date format: {inputText}") # >= 3.6
-    
+        print('Bad date format')
+
 def parseTime(inputText):
-    reg=re.compile(r"^([0-2]\d)[H:]([0-5]\d)([M:]([0-5]\d))?$", re.IGNORECASE)
-    mo=reg.search(inputText)
-    if mo:
-        hh,mm,__,sec=mo.groups()
-        if sec==None: sec=0
-        return dt.time(int(hh), int(mm), int(sec))
-    else:
-        raise ParseTimeError("Bad time format: {}".format(inputText)) # > 3.0
+    regexp=re.compile(r"^([0-2]\d)[hH:]([0-5]\d)([mM:]([0-5]\d))?$")
 
-def parseFloat(inputText):
-    reg=re.compile(r"^[+-]?(\d|[1-9]\d+)\.\d*$") 
-    mo=reg.search(inputText)
-    if mo:
-        return float(mo[0]) # <=> return float(mo.group(0))
+    match = regexp.search(inputText)
+
+    if match:
+        hh = match[1]
+        mm = match[2]
+        ss = match[4]
+        if ss == None:
+            ss = int(0)
+        print('Format ok. Time is')
+        print(match[0])
+        print(dt.time(int(hh), int(mm), int(ss)))
     else:
-        raise ParseFloatError("Bad float format: %s" % (inputText))
+        print('Bad time format')
+
+dateStr=("01/12/1903", "15/08/16", "45/08/16","15/08/016", "5/08/16")
+
+for d in dateStr:    
+    parseDate(d)
+
+timeStr=("12:23", "13:45:56", "23h45","23H45M56", "45:67", "12;34")
+
+for t in timeStr:
+    parseTime(t)
+
+
+# def parseDate(inputText):
+#     """
+
+#     Parameters
+#     ----------
+#     inputText : TYPE
+#         DESCRIPTION.
+
+#     Raises
+#     ------
+#     ParseDateError
+#         DESCRIPTION.
+
+#     Returns
+#     -------
+#     TYPE
+#         DESCRIPTION.
+
+#     """
+#     reg=re.compile(r"""^          # beginning of the string
+#                        ([0-3]\d)  # the day
+#                        /
+#                        ([01]\d)   # the month
+#                        /
+#                        (\d\d|\d{4}) # the year
+#                        $            # end of the string
+#                        """, re.VERBOSE)
     
-if __name__ == "__main__":
+#     mo=reg.search(inputText)
+#     if mo:
+#         d,m,y=map(int, mo.groups())
+#         if y <= 99: 
+#             y+= 2000
+#         return dt.date(y, m, d)
+#     else:
+#         raise ParseDateError(f"Bad date format: {inputText}") # >= 3.6
+    
+# def parseTime(inputText):
+#     reg=re.compile(r"^([0-2]\d)[H:]([0-5]\d)([M:]([0-5]\d))?$", re.IGNORECASE)
+#     mo=reg.search(inputText)
+#     if mo:
+#         hh,mm,__,sec=mo.groups()
+#         if sec==None: sec=0
+#         return dt.time(int(hh), int(mm), int(sec))
+#     else:
+#         raise ParseTimeError("Bad time format: {}".format(inputText)) # > 3.0
+
+# def parseFloat(inputText):
+#     reg=re.compile(r"^[+-]?(\d|[1-9]\d+)\.\d*$") 
+#     mo=reg.search(inputText)
+#     if mo:
+#         return float(mo[0]) # <=> return float(mo.group(0))
+#     else:
+#         raise ParseFloatError("Bad float format: %s" % (inputText))
+    
+# if __name__ == "__main__":
  
-    dateStr=("22/12/1903", "15/08/16", "45/08/16","15/08/016", "5/08/16")
-    for d in dateStr:
-        try:
-            nd=parseDate(d)
-            print(f"Parsing of {d} OK -> {nd}")
-        except ParseDateError as ex:
-            print(f"Bad format: {ex}")
+#     dateStr=("22/12/1903", "15/08/16", "45/08/16","15/08/016", "5/08/16")
+#     for d in dateStr:
+#         try:
+#             nd=parseDate(d)
+#             print(f"Parsing of {d} OK -> {nd}")
+#         except ParseDateError as ex:
+#             print(f"Bad format: {ex}")
            
-    timeStr=("12:23", "13:45:56", "23h45","23H45M56", "45:67", "12;34")
-    for t in timeStr:
-        try:
-            nt=parseTime(t)
-            print(f"Parsing of {t} OK -> {nt}")
-        except:
-            print(f"{t}: bad format!!!", t)
+#     timeStr=("12:23", "13:45:56", "23h45","23H45M56", "45:67", "12;34")
+#     for t in timeStr:
+#         try:
+#             nt=parseTime(t)
+#             print(f"Parsing of {t} OK -> {nt}")
+#         except:
+#             print(f"{t}: bad format!!!", t)
                 
-    floatStr=("1244.456", "-3.56", "0.003","12", "003.4", "12;34")
-    for f in floatStr:
-        try:
-            nf=parseFloat(f)
-            print(f"Parsing of {f} OK -> {nf}")
-        except Exception as ex:
-            print(f"exception message: {ex}")
+#     floatStr=("1244.456", "-3.56", "0.003","12", "003.4", "12;34")
+#     for f in floatStr:
+#         try:
+#             nf=parseFloat(f)
+#             print(f"Parsing of {f} OK -> {nf}")
+#         except Exception as ex:
+#             print(f"exception message: {ex}")

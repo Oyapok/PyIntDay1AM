@@ -1,7 +1,5 @@
 import re
 
-text="image.png"
-
 """
 \d     a digit
 +         1 or more occurrence
@@ -23,6 +21,8 @@ text="image.png"
 $   end the string
 (gif|jpg|png)   gif or jpg or png
 """
+
+text="image.png"
 
 regexp=re.compile(r"^(.+)\.(gif|jpg|png)$")
 
